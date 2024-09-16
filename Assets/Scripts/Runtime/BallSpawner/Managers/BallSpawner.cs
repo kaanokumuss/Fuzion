@@ -1,7 +1,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class BallShooter : MonoBehaviour
+public class BallSpawner : MonoBehaviour
 {
     public GameObject ballPrefab;       // The ball prefab (sphere)
     public float fireForce = 1f;        // Force to apply when shooting

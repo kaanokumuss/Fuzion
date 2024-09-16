@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class BallSpawnerMover : MonoBehaviour
 {
-    public BallShooter ballShooter; // Reference to the BallShooter script
+    public BallSpawner ballShooter; // Reference to the BallShooter script
     public float minX = -5f;
     public float maxX = 5f;
 
