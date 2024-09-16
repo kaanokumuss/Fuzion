@@ -3,6 +3,9 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     public Color ballColor;
+    private bool canMerge = false;
+    public float mergeCooldown = 1f;
+    public float destroyDelay = 2f;  // Topu yok etmeden önce gecikme süresi
 
     void Start()
     {
@@ -13,18 +16,24 @@ public class Ball : MonoBehaviour
         }
 
         AdjustScaleBasedOnColor();
+
+        Invoke(nameof(EnableMerging), mergeCooldown);
+    }
+
+    private void EnableMerging()
+    {
+        canMerge = true;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (!canMerge) return;
+
         Ball otherBall = collision.gameObject.GetComponent<Ball>();
 
-        if (otherBall != null)
+        if (otherBall != null && IsColorCloseTo(otherBall.ballColor, this.ballColor))
         {
-            if (IsColorCloseTo(otherBall.ballColor, this.ballColor))
-            {
-                MergeBalls(this, otherBall);
-            }
+            MergeBalls(this, otherBall);
         }
     }
 
@@ -60,9 +69,34 @@ public class Ball : MonoBehaviour
         {
             newScale = new Vector3(2.6f, 2.6f, 2.6f);
         }
-        else if (IsColorCloseTo(ballColor, Color.gray))
+        else if (IsColorCloseTo(ballColor, Color.gray)) // Gri
         {
             newScale = new Vector3(2.8f, 2.8f, 2.8f);
+        }
+        else if (IsColorCloseTo(ballColor, new Color(0.3f, 0.3f, 0.3f))) // Koyu Gri (En büyük top)
+        {
+            newScale = new Vector3(3.0f, 3.0f, 3.0f);
+        }
+        // Yeni renkler ve ölçekler
+        else if (IsColorCloseTo(ballColor, new Color(0.3f, 0.3f, 0.3f))) // Koyu Gri
+        {
+            newScale = new Vector3(3.2f, 3.2f, 3.2f); // Mor (#800080)
+        }
+        else if (IsColorCloseTo(ballColor, new Color(0.5f, 0, 0.5f))) // Mor
+        {
+            newScale = new Vector3(3.4f, 3.4f, 3.4f); // Açık Mavi (#ADD8E6)
+        }
+        else if (IsColorCloseTo(ballColor, new Color(0.68f, 0.85f, 0.9f))) // Açık Mavi
+        {
+            newScale = new Vector3(3.6f, 3.6f, 3.6f); // Altın (#FFD700)
+        }
+        else if (IsColorCloseTo(ballColor, new Color(1f, 0.84f, 0))) // Altın
+        {
+            newScale = new Vector3(3.8f, 3.8f, 3.8f); // Pembe (#FFC0CB)
+        }
+        else if (IsColorCloseTo(ballColor, new Color(1f, 0.75f, 0.8f))) // Pembe
+        {
+            newScale = new Vector3(4.0f, 4.0f, 4.0f); // Açık Yeşil (#90EE90)
         }
 
         transform.localScale = newScale;
@@ -80,12 +114,12 @@ public class Ball : MonoBehaviour
         Ball largerBall = ball1.transform.localScale.magnitude >= ball2.transform.localScale.magnitude ? ball1 : ball2;
         Ball smallerBall = ball1.transform.localScale.magnitude < ball2.transform.localScale.magnitude ? ball1 : ball2;
 
-        Vector3 largestScale = new Vector3(2.8f, 2.8f, 2.8f);
+        Vector3 maxScale = new Vector3(4.0f, 4.0f, 4.0f); // En büyük ölçek
 
-        if (largerBall.transform.localScale == largestScale && smallerBall.transform.localScale == largestScale)
+        if (largerBall.transform.localScale == maxScale && smallerBall.transform.localScale == maxScale)
         {
-            Destroy(largerBall.gameObject);
-            Destroy(smallerBall.gameObject);
+            Destroy(largerBall.gameObject, destroyDelay);
+            Destroy(smallerBall.gameObject, destroyDelay);
         }
         else
         {
@@ -101,6 +135,11 @@ public class Ball : MonoBehaviour
             if (renderer != null)
             {
                 renderer.material.color = newColor;
+            }
+
+            if (newScale == maxScale)
+            {
+                Destroy(largerBall.gameObject, destroyDelay);
             }
         }
     }
@@ -134,6 +173,31 @@ public class Ball : MonoBehaviour
         else if (IsColorCloseTo(currentColor, new Color(0.55f, 0, 0))) // Koyu Kırmızı
         {
             return Color.gray;
+        }
+        else if (IsColorCloseTo(currentColor, Color.gray))
+        {
+            return new Color(0.3f, 0.3f, 0.3f); // Koyu Gri (En büyük renk)
+        }
+        // Yeni renkler
+        else if (IsColorCloseTo(currentColor, new Color(0.3f, 0.3f, 0.3f))) // Koyu Gri
+        {
+            return new Color(0.5f, 0, 0.5f); // Mor (#800080)
+        }
+        else if (IsColorCloseTo(currentColor, new Color(0.5f, 0, 0.5f))) // Mor
+        {
+            return new Color(0.68f, 0.85f, 0.9f); // Açık Mavi (#ADD8E6)
+        }
+        else if (IsColorCloseTo(currentColor, new Color(0.68f, 0.85f, 0.9f))) // Açık Mavi
+        {
+            return new Color(1f, 0.84f, 0); // Altın (#FFD700)
+        }
+        else if (IsColorCloseTo(currentColor, new Color(1f, 0.84f, 0))) // Altın
+        {
+            return new Color(1f, 0.75f, 0.8f); // Pembe (#FFC0CB)
+        }
+        else if (IsColorCloseTo(currentColor, new Color(1f, 0.75f, 0.8f))) // Pembe
+        {
+            return new Color(0.56f, 0.93f, 0.56f); // Açık Yeşil (#90EE90)
         }
 
         return currentColor;
