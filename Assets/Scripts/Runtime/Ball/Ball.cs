@@ -37,17 +37,41 @@ public class Ball : MonoBehaviour
         {
             newScale = new Vector3(1f, 1f, 1f);
         }
-        else if (IsColorCloseTo(ballColor, Color.yellow))
+        else if (IsColorCloseTo(ballColor, new Color(0, 1, 1))) // Mavi-Yeşil
         {
             newScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
-        else if (IsColorCloseTo(ballColor, Color.red))
+        else if (IsColorCloseTo(ballColor, Color.green))
         {
             newScale = new Vector3(1.4f, 1.4f, 1.4f);
         }
-        else if (IsColorCloseTo(ballColor, Color.green))
+        else if (IsColorCloseTo(ballColor, new Color(0.9f, 0.8f, 0))) // Sarı Yeşil
         {
             newScale = new Vector3(1.6f, 1.6f, 1.6f);
+        }
+        else if (IsColorCloseTo(ballColor, Color.yellow))
+        {
+            newScale = new Vector3(1.8f, 1.8f, 1.8f);
+        }
+        else if (IsColorCloseTo(ballColor, new Color(1, 0.65f, 0))) // Turuncu
+        {
+            newScale = new Vector3(2f, 2f, 2f);
+        }
+        else if (IsColorCloseTo(ballColor, new Color(0.54f, 0.27f, 0))) // Kahverengi
+        {
+            newScale = new Vector3(2.2f, 2.2f, 2.2f);
+        }
+        else if (IsColorCloseTo(ballColor, Color.red))
+        {
+            newScale = new Vector3(2.4f, 2.4f, 2.4f);
+        }
+        else if (IsColorCloseTo(ballColor, new Color(0.55f, 0, 0))) // Koyu Kırmızı
+        {
+            newScale = new Vector3(2.6f, 2.6f, 2.6f);
+        }
+        else if (IsColorCloseTo(ballColor, Color.gray))
+        {
+            newScale = new Vector3(2.8f, 2.8f, 2.8f);
         }
 
         transform.localScale = newScale;
@@ -67,7 +91,7 @@ public class Ball : MonoBehaviour
         Ball smallerBall = ball1.transform.localScale.magnitude < ball2.transform.localScale.magnitude ? ball1 : ball2;
 
         // En büyük ölçeği belirle
-        Vector3 largestScale = new Vector3(1.6f, 1.6f, 1.6f);  // Bu, yeşil topun ölçeği
+        Vector3 largestScale = new Vector3(2.8f, 2.8f, 2.8f);  // Bu, gri topun ölçeği
 
         // Eğer her iki top da en büyük ölçeğe sahipse, her ikisini de yok et
         if (largerBall.transform.localScale == largestScale && smallerBall.transform.localScale == largestScale)
@@ -97,27 +121,44 @@ public class Ball : MonoBehaviour
         }
     }
 
-
-
     private Color GetNextColor(Color currentColor)
     {
-        // Renk yükseltme kuralları
+        // Renk geçişleri
         if (IsColorCloseTo(currentColor, Color.blue))
         {
-            return Color.yellow; // Mavi -> Sarı
+            return new Color(0, 1, 1); // Mavi-Yeşil
         }
-        else if (IsColorCloseTo(currentColor, Color.yellow))
+        else if (IsColorCloseTo(currentColor, new Color(0, 1, 1))) // Mavi-Yeşil
         {
-            return Color.red; // Sarı -> Kırmızı
-        }
-        else if (IsColorCloseTo(currentColor, Color.red))
-        {
-            return Color.green; // Kırmızı -> Yeşil
+            return Color.green; // Yeşil
         }
         else if (IsColorCloseTo(currentColor, Color.green))
         {
-            // Yeşil zaten en yüksek renk, isteğe bağlı olarak başka bir işlem yapılabilir
-            return currentColor; // Değişmez
+            return new Color(0.9f, 0.8f, 0); // Sarı Yeşil
+        }
+        else if (IsColorCloseTo(currentColor, new Color(0.9f, 0.8f, 0))) // Sarı Yeşil
+        {
+            return Color.yellow; // Sarı
+        }
+        else if (IsColorCloseTo(currentColor, Color.yellow))
+        {
+            return new Color(1, 0.65f, 0); // Turuncu
+        }
+        else if (IsColorCloseTo(currentColor, new Color(1, 0.65f, 0))) // Turuncu
+        {
+            return new Color(0.54f, 0.27f, 0); // Kahverengi
+        }
+        else if (IsColorCloseTo(currentColor, new Color(0.54f, 0.27f, 0))) // Kahverengi
+        {
+            return Color.red; // Kırmızı
+        }
+        else if (IsColorCloseTo(currentColor, Color.red))
+        {
+            return new Color(0.55f, 0, 0); // Koyu Kırmızı
+        }
+        else if (IsColorCloseTo(currentColor, new Color(0.55f, 0, 0))) // Koyu Kırmızı
+        {
+            return Color.gray; // Gri
         }
 
         // Varsayılan olarak aynı rengi döndür
