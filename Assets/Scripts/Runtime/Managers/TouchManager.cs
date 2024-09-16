@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TouchManager : MonoBehaviour
 {
+     
     public bool IsTouching()
     {
         return Input.GetMouseButtonDown(0);

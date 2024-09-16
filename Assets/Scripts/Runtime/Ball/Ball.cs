@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public Color ballColor;  // Topun rengi
+    public Color ballColor;
 
     void Start()
     {
@@ -21,7 +21,6 @@ public class Ball : MonoBehaviour
 
         if (otherBall != null)
         {
-            // Eğer renkler aynıysa topları birleştir
             if (IsColorCloseTo(otherBall.ballColor, this.ballColor))
             {
                 MergeBalls(this, otherBall);
@@ -37,17 +36,9 @@ public class Ball : MonoBehaviour
         {
             newScale = new Vector3(1f, 1f, 1f);
         }
-        else if (IsColorCloseTo(ballColor, new Color(0, 1, 1))) // Mavi-Yeşil
-        {
-            newScale = new Vector3(1.2f, 1.2f, 1.2f);
-        }
         else if (IsColorCloseTo(ballColor, Color.green))
         {
             newScale = new Vector3(1.4f, 1.4f, 1.4f);
-        }
-        else if (IsColorCloseTo(ballColor, new Color(0.9f, 0.8f, 0))) // Sarı Yeşil
-        {
-            newScale = new Vector3(1.6f, 1.6f, 1.6f);
         }
         else if (IsColorCloseTo(ballColor, Color.yellow))
         {
@@ -86,14 +77,11 @@ public class Ball : MonoBehaviour
 
     private void MergeBalls(Ball ball1, Ball ball2)
     {
-        // Küçük ve büyük topu belirle
         Ball largerBall = ball1.transform.localScale.magnitude >= ball2.transform.localScale.magnitude ? ball1 : ball2;
         Ball smallerBall = ball1.transform.localScale.magnitude < ball2.transform.localScale.magnitude ? ball1 : ball2;
 
-        // En büyük ölçeği belirle
-        Vector3 largestScale = new Vector3(2.8f, 2.8f, 2.8f);  // Bu, gri topun ölçeği
+        Vector3 largestScale = new Vector3(2.8f, 2.8f, 2.8f);
 
-        // Eğer her iki top da en büyük ölçeğe sahipse, her ikisini de yok et
         if (largerBall.transform.localScale == largestScale && smallerBall.transform.localScale == largestScale)
         {
             Destroy(largerBall.gameObject);
@@ -101,18 +89,14 @@ public class Ball : MonoBehaviour
         }
         else
         {
-            // Küçük topu yok et
             Destroy(smallerBall.gameObject);
 
-            // Büyük topun ölçeğini bir üst seviyeye çıkar
             Vector3 newScale = largerBall.transform.localScale + Vector3.one * 0.2f;
             largerBall.transform.localScale = newScale;
 
-            // Yeni rengi hesapla
             Color newColor = GetNextColor(largerBall.ballColor);
             largerBall.ballColor = newColor;
 
-            // Renderer rengini güncelle
             Renderer renderer = largerBall.GetComponent<Renderer>();
             if (renderer != null)
             {
@@ -123,22 +107,13 @@ public class Ball : MonoBehaviour
 
     private Color GetNextColor(Color currentColor)
     {
-        // Renk geçişleri
         if (IsColorCloseTo(currentColor, Color.blue))
         {
-            return new Color(0, 1, 1); // Mavi-Yeşil
-        }
-        else if (IsColorCloseTo(currentColor, new Color(0, 1, 1))) // Mavi-Yeşil
-        {
-            return Color.green; // Yeşil
+            return Color.green;
         }
         else if (IsColorCloseTo(currentColor, Color.green))
         {
-            return new Color(0.9f, 0.8f, 0); // Sarı Yeşil
-        }
-        else if (IsColorCloseTo(currentColor, new Color(0.9f, 0.8f, 0))) // Sarı Yeşil
-        {
-            return Color.yellow; // Sarı
+            return Color.yellow;
         }
         else if (IsColorCloseTo(currentColor, Color.yellow))
         {
@@ -150,7 +125,7 @@ public class Ball : MonoBehaviour
         }
         else if (IsColorCloseTo(currentColor, new Color(0.54f, 0.27f, 0))) // Kahverengi
         {
-            return Color.red; // Kırmızı
+            return Color.red;
         }
         else if (IsColorCloseTo(currentColor, Color.red))
         {
@@ -158,10 +133,9 @@ public class Ball : MonoBehaviour
         }
         else if (IsColorCloseTo(currentColor, new Color(0.55f, 0, 0))) // Koyu Kırmızı
         {
-            return Color.gray; // Gri
+            return Color.gray;
         }
 
-        // Varsayılan olarak aynı rengi döndür
         return currentColor;
     }
 }
