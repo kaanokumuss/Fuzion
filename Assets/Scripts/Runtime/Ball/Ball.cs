@@ -66,8 +66,11 @@ public class Ball : MonoBehaviour
         Ball largerBall = ball1.transform.localScale.magnitude >= ball2.transform.localScale.magnitude ? ball1 : ball2;
         Ball smallerBall = ball1.transform.localScale.magnitude < ball2.transform.localScale.magnitude ? ball1 : ball2;
 
-        // Eğer her iki top da yeşilse, her ikisini de yok et
-        if (IsColorCloseTo(largerBall.ballColor, Color.green) && IsColorCloseTo(smallerBall.ballColor, Color.green))
+        // En büyük ölçeği belirle
+        Vector3 largestScale = new Vector3(1.6f, 1.6f, 1.6f);  // Bu, yeşil topun ölçeği
+
+        // Eğer her iki top da en büyük ölçeğe sahipse, her ikisini de yok et
+        if (largerBall.transform.localScale == largestScale && smallerBall.transform.localScale == largestScale)
         {
             Destroy(largerBall.gameObject);
             Destroy(smallerBall.gameObject);
@@ -93,6 +96,7 @@ public class Ball : MonoBehaviour
             }
         }
     }
+
 
 
     private Color GetNextColor(Color currentColor)
